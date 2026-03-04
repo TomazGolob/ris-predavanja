@@ -37,20 +37,28 @@ Ni specifičnih zahtev za design, spletna aplikacija.
 Več na emailu v PDFju oz na listu.
 
 Funkcionalne zahteve:
-- Registracija novih strank preko spleta.
-- Preverjanje emaila ob registraciji z potrditvenim emailom.
-- Ob registraciji se ustvari uporabniški račun z člansko številko in uporabniku pošlje kartica lojalnosti.
-- Mesečni uvoz nakupov iz obstoječega sistema.
-- Prijava in odjava iz sistema za stranke in administratorje.
-- Prehod med nivoju lojalnosti je tik pred mesečnim izračunom točk.
-- Uporabnik lahko pregleda zbrane točke, koristi točke, pregleda nakupni program, pregleda zneske preteklih nakupov
-- Administrator pregleda statuse strank za poljubno obdobje, statistiko nakupov, izvaja poljubne poizvedbe po podatkovni bazi, upravlja s programom (nagrada za točke zvestobe), upravlja pravila glede prehajanja med statusi in nagrajevanjem.
-- Mesečni izračun statusa in točk glede na nakupe preteklega meseca in dodeljena pravila
+- F1 Sistem mora omogočati registracijo novih strank v program lojalnosti.
+- F2 Sistem mora ob registraciji preveriti email s potrditvenim emailom.
+- F3 Sistem mora ob registraciji ustvariti uporabniški račun z člansko številko in uporabniku pošljati kartico lojalnosti.
+- F4 Sistem mora enkrat mesečno uvoziti podatke o nakupih iz obstoječega sistema.
+- F5 Sistem omogoča prijava in odjava uporabnikov (strank in administratorjev).
+- F6 Sistem mora pred mesečnim izračunom točk posodobiti status stranke glede na pravila programa lojalnosti.
+- F7 Uporabnik lahko pregleda zbrane točke.
+- F8 Uporabnik lahko pregleda program nagrad za točke zvestobe.
+- F9 Uporabnik lahko koristi točke za nagrade.
+- F10 Uporabnik lahko pregleda zneske preteklih nakupov.
+- F11 Administrator lahko pregleda statuse strank za poljubno obdobje.
+- F12 Administrator lahko pregleda statistiko nakupov.
+- F13 Administrator lahko izvaja poizvedbe nad podatkovno bazo.
+- F14 Administrator lahko upravlja program nagrad za točke zvestobe.
+- F15 Administrator lahko ureja pravila glede prehajanja med statusi in nagrajevanjem.
+- F16 Sistem mora enkrat mesečno izračunati status in točke strank glede na nakupe preteklega meseca in definirana pravila.
 
 Nefunkcionalne zahteve:
-- Varnost (uporabniki se potrebujejo prijaviti)
-- Uporablja Oracle bazo
-- Podpira vsaj 500 000 uporabnikov, z podporo skalabilnosti.
-- Mesečna obdelava podatkov (uvoz nakupov, izračun statusa, izračun tolk) v razumnem času.
-- Večjezična podpora (slovenščina in angleščina).
-- Intuativen uporabniški vmesnik in uporaba sodobnih tehnologij.
+- NF1 Sistem mora zagotoviti varno avtentikacijo uporabnikov in dostop samo do lastnih podatkov.
+- NF2 Sistem mora uporabljati Oracle bazo.
+- NF3 Sistem mora podpira vsaj 500 000 uporabnikov, z podporo skalabilnosti.
+- NF4 Mesečna obdelava podatkov (uvoz nakupov, izračun statusa, izračun tolk) ne sme vplivati na normalno delovanje sistema.
+- NF5 Sistem mora podpirati slovenščino in angleščino.
+- NF6 Uporabniški vmesnik mora biti intuativen.
+- NF7 Sistem mora biti implementiran z uporabo sodobnih tehnologij.
