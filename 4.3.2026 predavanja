@@ -37,17 +37,20 @@ Ni specifičnih zahtev za design, spletna aplikacija.
 Več na emailu v PDFju oz na listu.
 
 Funkcionalne zahteve:
-- Registracija novih strank
-- Prijava in odjava iz sistema za stranke in administratorje
-- 4 nivoju lojalnosti: osnovni, bronasti, srebrni, zlati.
-- Uporabnik prehaja med nivoji mesečno, tik pred izračunom točk.
-- Večjezična podpora (slovenščina in angleščina)
+- Registracija novih strank preko spleta.
+- Preverjanje emaila ob registraciji z potrditvenim emailom.
+- Ob registraciji se ustvari uporabniški račun z člansko številko in uporabniku pošlje kartica lojalnosti.
+- Mesečni uvoz nakupov iz obstoječega sistema.
+- Prijava in odjava iz sistema za stranke in administratorje.
+- Prehod med nivoju lojalnosti je tik pred mesečnim izračunom točk.
 - Uporabnik lahko pregleda zbrane točke, koristi točke, pregleda nakupni program, pregleda zneske preteklih nakupov
 - Administrator pregleda statuse strank za poljubno obdobje, statistiko nakupov, izvaja poljubne poizvedbe po podatkovni bazi, upravlja s programom (nagrada za točke zvestobe), upravlja pravila glede prehajanja med statusi in nagrajevanjem.
-- Mesečni izračun točk glede na pretekli mesec in dodeljena pravila
-- 
+- Mesečni izračun statusa in točk glede na nakupe preteklega meseca in dodeljena pravila
 
 Nefunkcionalne zahteve:
 - Varnost (uporabniki se potrebujejo prijaviti)
 - Uporablja Oracle bazo
-- Podpira vsaj 500 000 uporabnikov.
+- Podpira vsaj 500 000 uporabnikov, z podporo skalabilnosti.
+- Mesečna obdelava podatkov (uvoz nakupov, izračun statusa, izračun tolk) v razumnem času.
+- Večjezična podpora (slovenščina in angleščina).
+- Intuativen uporabniški vmesnik in uporaba sodobnih tehnologij.
