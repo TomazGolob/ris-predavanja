@@ -1,1 +1,36 @@
+Maestro trgovska veriga ki želi vpeljati program lojalnosti.
 
+Program so si zamislili:
+- osnovni / bronasti / srebrni / zlati (+ mogoče še kakšna kasnej)
+- stranka zaproti -> kartica lojalnosti
+- preko spleta (osebne podatke, login, kartica po pošti)
+- uporabniško ime (za spletni portal)
+
+Izračun tolk:
+- 1x / mesec za pretekli mesec
+- Preverijo opravljene nakupe za cel mesec, dodelijo točke glede na nakupe
+
+Možnost spreminjajo pravila nagrajevanja, ampak osnove:
+- znesek nakupov <200e: os 5, sr 7.5, ...
+- ... (dobimo kasneje)
+
+Pravila prehaja med statusi:
+- osnovni najnižji, zlati najvišji
+- Default osnovni
+- Ko prvič presežeš 499e mesečno dobiš srebrni
+- Še 2x presežeš -> zlati
+- Ohranjanje statusa potrebuje določen nivo
+- ...
+
+Login: 
+- uporabniki
+- admini
+
+Obseg:
+- 70% strank (cca 500k) bo v programu
+- Izven SI (po celem balkanu) - več zakonov?
+- Podpora za več uporabnikov
+- Vsaj 2 podprta jezika
+- Uporaba Oracle baza
+
+Ni specifičnih zahtev za design, spletna aplikacija.
