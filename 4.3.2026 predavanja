@@ -23,7 +23,7 @@ Pravila prehaja med statusi:
 - ...
 
 Login: 
-- uporabniki
+- uporabniki (stranke)
 - admini
 
 Obseg:
@@ -34,3 +34,20 @@ Obseg:
 - Uporaba Oracle baza
 
 Ni specifičnih zahtev za design, spletna aplikacija.
+Več na emailu v PDFju oz na listu.
+
+Funkcionalne zahteve:
+- Registracija novih strank
+- Prijava in odjava iz sistema za stranke in administratorje
+- 4 nivoju lojalnosti: osnovni, bronasti, srebrni, zlati.
+- Uporabnik prehaja med nivoji mesečno, tik pred izračunom točk.
+- Večjezična podpora (slovenščina in angleščina)
+- Uporabnik lahko pregleda zbrane točke, koristi točke, pregleda nakupni program, pregleda zneske preteklih nakupov
+- Administrator pregleda statuse strank za poljubno obdobje, statistiko nakupov, izvaja poljubne poizvedbe po podatkovni bazi, upravlja s programom (nagrada za točke zvestobe), upravlja pravila glede prehajanja med statusi in nagrajevanjem.
+- Mesečni izračun točk glede na pretekli mesec in dodeljena pravila
+- 
+
+Nefunkcionalne zahteve:
+- Varnost (uporabniki se potrebujejo prijaviti)
+- Uporablja Oracle bazo
+- Podpira vsaj 500 000 uporabnikov.
