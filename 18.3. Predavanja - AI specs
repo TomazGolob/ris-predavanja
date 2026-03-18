@@ -1,0 +1,447 @@
+# Specifikacija zahtev za razvoj rešitve za podporo programu lojalnosti Maestro
+
+## 1. Opis sistema
+
+### 1.1 Problemska domena
+
+**Program lojalnosti v trgovski verigi Maestro**
+
+Sistem je namenjen podpori programu lojalnosti trgovske verige Maestro. Glavni cilj rešitve je povečati zvestobo strank, spodbuditi pogostejše in večje nakupe ter omogočiti učinkovito upravljanje programa lojalnosti na ravni podjetja.
+
+Program lojalnosti temelji na vključevanju strank v članski program, dodeljevanju statusov lojalnosti, mesečnem izračunu točk zvestobe ter koriščenju nagrad. Stranke bodo lahko dostopale do spletnega portala, prek katerega bodo spremljale svoje točke, zgodovino nakupov, svoj status in razpoložljive nagrade. Poleg uporabniškega dela mora rešitev vključevati tudi administrativni del za zaposlene v podjetju, kjer bo mogoče upravljati pravila točkovanja, pravila prehodov med statusi, nagradni program in poslovna poročila.
+
+Rešitev bo povezana z obstoječim poslovnim informacijskim sistemom trgovske verige, iz katerega bo mesečno pridobivala podatke o opravljenih nakupih posameznih strank. Sistem mora prav tako omogočati pošiljanje potrditvenih e-sporočil ob registraciji in podporo pošiljanju kartic lojalnosti po navadni pošti.
+
+Sistem bodo uporabljale naslednje skupine uporabnikov:
+
+* **Stranke**: za registracijo, prijavo, pregled točk, pregled nakupov, koriščenje točk in pregled nagrad.
+* **Administratorji**: za pregled statistik, upravljanje pravil programa, upravljanje nagrad in pregled statusov strank.
+* **Sistemski operaterji oziroma IT osebje**: za nadzor nad delovanjem integracij, uvozov podatkov in tehnično podporo.
+
+Sistem mora izpolnjevati tudi pomembne nefunkcionalne zahteve. Zagotavljati mora visoko zmogljivost, saj se pričakuje vsaj 500.000 vključenih uporabnikov, obenem pa mora biti pripravljen na širitev na tuje trge. Podpirati mora slovenski in angleški jezik, uporabljati Oracle podatkovno bazo ter zagotavljati sodoben, intuitiven in varen uporabniški vmesnik.
+
+### 1.2 Namen sistema
+
+Namen sistema je:
+
+* povečati zvestobo strank,
+* spodbuditi večjo vrednost nakupov,
+* omogočiti digitalno upravljanje programa lojalnosti,
+* zagotoviti preglednost nad točkami, statusi in nagradami,
+* omogočiti administratorjem učinkovito upravljanje programa.
+
+### 1.3 Uporabniki sistema
+
+* gost (neregistrirana stranka)
+* član programa lojalnosti
+* administrator
+* sistemski operater
+
+### 1.4 Povezave z drugimi sistemi
+
+Sistem se povezuje z naslednjimi zunanjimi sistemi:
+
+* **Poslovni IS**: vir podatkov o mesečnih nakupih strank
+* **E-poštni sistem**: verifikacija registracije in obvestila
+* **Oracle podatkovna baza**: hramba vseh podatkov sistema
+* **Poštni oziroma logistični proces**: pošiljanje kartic lojalnosti
+
+---
+
+## 2. Funkcionalne zahteve
+
+### 2.1 Seznam funkcionalnih zahtev
+
+| ID    | Funkcionalna zahteva                  | Opis                                                                              | Prioriteta  |
+| ----- | ------------------------------------- | --------------------------------------------------------------------------------- | ----------- |
+| FZ-01 | Registracija uporabnika               | Sistem mora omogočati spletno registracijo uporabnika v program lojalnosti.       | Must have   |
+| FZ-02 | Verifikacija e-pošte                  | Sistem mora preveriti lastništvo e-poštnega naslova prek potrditvenega sporočila. | Must have   |
+| FZ-03 | Ustvarjanje uporabniškega računa      | Ob uspešni registraciji sistem ustvari uporabniški račun za dostop do portala.    | Must have   |
+| FZ-04 | Generiranje kartice lojalnosti        | Sistem mora za vsakega člana ustvariti kartico lojalnosti.                        | Should have |
+| FZ-05 | Mesečni uvoz nakupov                  | Sistem mora enkrat mesečno pridobiti podatke o nakupih iz poslovnega IS.          | Must have   |
+| FZ-06 | Posodabljanje statusa                 | Sistem mora pred izračunom točk preveriti in posodobiti status člana.             | Must have   |
+| FZ-07 | Izračun točk zvestobe                 | Sistem mora mesečno izračunati točke glede na znesek nakupov in status stranke.   | Must have   |
+| FZ-08 | Pregled točk                          | Uporabnik mora imeti možnost pregleda trenutnega stanja točk.                     | Must have   |
+| FZ-09 | Koriščenje točk                       | Uporabnik mora imeti možnost unovčitve točk za nagrade.                           | Must have   |
+| FZ-10 | Pregled nagradnega programa           | Uporabnik mora imeti možnost pregleda razpoložljivih nagrad.                      | Should have |
+| FZ-11 | Pregled zgodovine nakupov             | Uporabnik mora imeti možnost pregleda mesečnih zneskov nakupov.                   | Should have |
+| FZ-12 | Upravljanje nagrad                    | Administrator mora upravljati seznam nagrad in pogoje za koriščenje.              | Should have |
+| FZ-13 | Upravljanje pravil točkovanja         | Administrator mora spreminjati pragove in vrednosti pravil za status in točke.    | Must have   |
+| FZ-14 | Pregled statusov za obdobje           | Administrator mora pregledovati statuse strank za izbrano obdobje.                | Should have |
+| FZ-15 | Pregled statistike nakupov            | Administrator mora imeti dostop do statističnih pregledov nakupov.                | Should have |
+| FZ-16 | Poljubne poizvedbe po podatkovni bazi | Administrator mora imeti možnost izvajanja nadzorovanih poizvedb nad podatki.     | Could have  |
+
+### 2.2 Pravila izračuna točk
+
+Sistem mora omogočati konfiguracijo pravil za izračun točk, začetna pravila pa so naslednja:
+
+#### a) Če je znesek nakupov do 200 EUR
+
+* osnovni status: 5 točk
+* bronasti status: 0 točk
+* srebrni status: 7,5 točk
+* zlati status: 10 točk
+
+#### b) Če je znesek nakupov med 200 EUR in 1000 EUR
+
+* osnovni status: 10 točk
+* bronasti status: 5 točk
+* srebrni status: 15 točk
+* zlati status: 20 točk
+
+#### c) Če je znesek nakupov nad 1000 EUR
+
+* osnovni status: 20 točk
+* bronasti status: 10 točk
+* srebrni status: 30 točk
+* zlati status: 40 točk
+
+### 2.3 Pravila prehajanja med statusi
+
+Sistem mora podpirati naslednja začetna pravila prehajanja med statusi:
+
+* ob včlanitvi ima stranka status **osnovni**,
+* ko z nakupi preteklega meseca prvič preseže 499 EUR, pridobi status **srebrni**,
+* če še dvakrat preseže znesek 499 EUR, pridobi status **zlati**,
+* za ohranitev statusa **srebrni** mora mesečno doseči vsaj 200 EUR nakupov,
+* za ohranitev statusa **zlati** mora mesečno doseči vsaj 500 EUR nakupov,
+* če uporabnik ne izpolnjuje pogojev za status **zlati**, se prestavi v **srebrni**,
+* če uporabnik dva meseca zapored ne izpolnjuje pogojev za status **srebrni**, preide v **bronasti**,
+* v statusu **bronasti** ostane, dokler dva zaporedna meseca ne doseže vsaj 200 EUR nakupov,
+* če v statusu **bronasti** opravi nakup pod 50 EUR, preide nazaj v **osnovni** status,
+* sistem mora status posodobiti **pred** izračunom točk.
+
+---
+
+## 3. Tehnične in nefunkcionalne zahteve
+
+### 3.1 Zahteve izdelka
+
+| ID     | Zahteva                                                                              | Skupina         |
+| ------ | ------------------------------------------------------------------------------------ | --------------- |
+| NFR-01 | Sistem mora omogočati odzivni čas do 2 sekund za običajne operacije uporabnika.      | Zahteva izdelka |
+| NFR-02 | Sistem mora podpirati vsaj 500.000 uporabnikov in omogočati nadaljnjo razširitev.    | Zahteva izdelka |
+| NFR-03 | Sistem mora zagotavljati varen dostop z avtentikacijo in varnim shranjevanjem gesel. | Zahteva izdelka |
+| NFR-04 | Sistem mora podpirati slovenski in angleški jezik.                                   | Zahteva izdelka |
+| NFR-05 | Sistem mora zagotavljati intuitiven in sodoben uporabniški vmesnik.                  | Zahteva izdelka |
+| NFR-06 | Sistem mora zagotavljati sledljivost sprememb pravil, statusov in točk.              | Zahteva izdelka |
+
+### 3.2 Organizacijske zahteve
+
+| ID     | Zahteva                                                                        | Skupina                |
+| ------ | ------------------------------------------------------------------------------ | ---------------------- |
+| NFR-07 | Sistem mora uporabljati Oracle podatkovno bazo.                                | Organizacijska zahteva |
+| NFR-08 | Razvoj mora temeljiti na sodobnih spletnih tehnologijah.                       | Organizacijska zahteva |
+| NFR-09 | Rešitev mora biti zasnovana tako, da jo bo mogoče tržiti tudi izven Slovenije. | Organizacijska zahteva |
+
+### 3.3 Zunanje zahteve
+
+| ID     | Zahteva                                                                           | Skupina         |
+| ------ | --------------------------------------------------------------------------------- | --------------- |
+| NFR-10 | Sistem mora biti skladen z zakonodajo o varstvu osebnih podatkov (GDPR).          | Zunanja zahteva |
+| NFR-11 | Sistem mora omogočati povezovanje z obstoječim poslovnim informacijskim sistemom. | Zunanja zahteva |
+| NFR-12 | Sistem mora omogočati integracijo s sistemom za e-poštna obvestila.               | Zunanja zahteva |
+
+---
+
+## 4. Vmesniki
+
+### 4.1 Uporabniški vmesniki
+
+#### VM-01: Zaslonska maska za registracijo
+
+Namen:
+
+* vnos osebnih podatkov,
+* vnos e-pošte in gesla,
+* oddaja zahtevka za vključitev v program.
+
+Glavni elementi:
+
+* ime, priimek,
+* e-poštni naslov,
+* geslo,
+* naslov,
+* gumb za registracijo.
+
+#### VM-02: Zaslonska maska za prijavo
+
+Namen:
+
+* avtentikacija uporabnika v portal.
+
+Glavni elementi:
+
+* e-pošta ali uporabniško ime,
+* geslo,
+* gumb za prijavo,
+* povezava za ponastavitev gesla.
+
+#### VM-03: Zaslonska maska za pregled točk in statusa
+
+Namen:
+
+* prikaz trenutnega statusa uporabnika,
+* prikaz stanja točk,
+* prikaz zgodovine točk.
+
+Glavni elementi:
+
+* ime uporabnika,
+* status,
+* stanje točk,
+* seznam zadnjih transakcij točk.
+
+#### VM-04: Zaslonska maska za pregled nagrad
+
+Namen:
+
+* prikaz razpoložljivih nagrad,
+* prikaz potrebnega števila točk,
+* koriščenje točk.
+
+Glavni elementi:
+
+* seznam nagrad,
+* opis nagrade,
+* število potrebnih točk,
+* gumb za unovčenje.
+
+#### VM-05: Zaslonska maska za pregled nakupov
+
+Namen:
+
+* prikaz mesečnih nakupov uporabnika.
+
+Glavni elementi:
+
+* mesec,
+* skupni znesek nakupov,
+* status za mesec,
+* pridobljene točke.
+
+#### VM-06: Administratorski vmesnik
+
+Namen:
+
+* upravljanje pravil,
+* upravljanje nagrad,
+* pregled statistik,
+* pregled statusov strank.
+
+Glavni elementi:
+
+* nadzorna plošča,
+* upravljanje nagrad,
+* urejanje pravil,
+* statistika,
+* poizvedbe.
+
+### 4.2 Zunanji vmesniki
+
+#### ZV-01: Vmesnik do poslovnega IS
+
+* prenos mesečnih podatkov o nakupih,
+* identifikacija uporabnika,
+* znesek nakupov,
+* obdobje.
+
+#### ZV-02: Vmesnik do e-poštnega sistema
+
+* pošiljanje potrditvenih sporočil,
+* pošiljanje obvestil,
+* pošiljanje navodil za ponastavitev gesla.
+
+#### ZV-03: Vmesnik do Oracle baze
+
+* hramba članov,
+* hramba statusov,
+* hramba točk,
+* hramba zgodovine nakupov,
+* hramba pravil in nagrad.
+
+---
+
+## 5. Slovar izrazov
+
+| Izraz              | Pomen                                                   |
+| ------------------ | ------------------------------------------------------- |
+| Program lojalnosti | Sistem nagrajevanja strank za njihove nakupe            |
+| Član programa      | Registrirana stranka, vključena v program lojalnosti    |
+| Kartica lojalnosti | Identifikacijsko sredstvo člana programa                |
+| Status             | Nivo lojalnosti uporabnika                              |
+| Osnovni status     | Začetni status ob registraciji                          |
+| Bronasti status    | Nižji status po neizpolnjevanju pogojev                 |
+| Srebrni status     | Višji status ob doseženem pragu nakupov                 |
+| Zlati status       | Najvišji status ob večkratnem preseganju praga          |
+| Točke zvestobe     | Enote nagrajevanja, ki jih član pridobi z nakupi        |
+| Nagrada            | Ugodnost ali izdelek, ki ga uporabnik pridobi s točkami |
+| Portal             | Spletna aplikacija za uporabo programa lojalnosti       |
+| Administrator      | Zaposleni, ki upravlja sistem                           |
+| Poslovni IS        | Obstoječi informacijski sistem trgovske verige          |
+
+---
+
+## 6. UML diagrami
+
+### 6.1 Use Case diagram
+
+```mermaid
+flowchart LR
+    U[Stranka]
+    A[Administrator]
+    IS[Poslovni IS]
+    ES[Email sistem]
+
+    UC1((Registracija v program))
+    UC2((Potrditev e-pošte))
+    UC3((Prijava v portal))
+    UC4((Pregled točk))
+    UC5((Pregled nakupov))
+    UC6((Koriščenje točk))
+    UC7((Pregled nagrad))
+    UC8((Upravljanje pravil))
+    UC9((Upravljanje nagrad))
+    UC10((Pregled statistik))
+    UC11((Uvoz nakupov))
+    UC12((Izračun statusov in točk))
+
+    U --> UC1
+    U --> UC2
+    U --> UC3
+    U --> UC4
+    U --> UC5
+    U --> UC6
+    U --> UC7
+
+    A --> UC8
+    A --> UC9
+    A --> UC10
+
+    IS --> UC11
+    ES --> UC2
+
+    UC11 --> UC12
+```
+
+### 6.2 Activity diagram – mesečni izračun statusa in točk
+
+```mermaid
+flowchart TD
+    Z([Začetek])
+    A[Uvoz mesečnih nakupov iz poslovnega IS]
+    B[Preberi znesek nakupov stranke]
+    C[Preveri pravila za spremembo statusa]
+    D[Posodobi status stranke]
+    E[Izračunaj točke glede na status in znesek]
+    F[Zapiši točke v bazo]
+    G[Posodobi zgodovino statusov]
+    H{Še kakšna stranka?}
+    K([Konec])
+
+    Z --> A
+    A --> B
+    B --> C
+    C --> D
+    D --> E
+    E --> F
+    F --> G
+    G --> H
+    H -- Da --> B
+    H -- Ne --> K
+```
+
+### 6.3 Class diagram
+
+```mermaid
+classDiagram
+
+    class Uporabnik {
+        +int uporabnikID
+        +string ime
+        +string priimek
+        +string email
+        +string geslo
+        +string naslov
+        +string jezik
+        +prijava()
+        +registracija()
+        +pregledProfila()
+    }
+
+    class ClanPrograma {
+        +int clanID
+        +date datumVclanitve
+        +string status
+        +double stanjeTock
+        +pregledTock()
+        +koristiTocke()
+    }
+
+    class KarticaLojalnosti {
+        +int karticaID
+        +string stevilkaKartice
+        +date datumIzdaje
+        +string stanje
+    }
+
+    class Nakup {
+        +int nakupID
+        +date mesec
+        +double znesek
+        +uvoziNakup()
+    }
+
+    class TockovnaTransakcija {
+        +int transakcijaID
+        +date datum
+        +double steviloTock
+        +string tip
+        +evidentiraj()
+    }
+
+    class Nagrada {
+        +int nagradaID
+        +string naziv
+        +string opis
+        +double potrebneTocke
+        +string status
+    }
+
+    class PraviloStatusa {
+        +int praviloID
+        +string naziv
+        +double prag
+        +posodobiPravilo()
+    }
+
+    class PraviloTockovanja {
+        +int praviloTockID
+        +double minZnesek
+        +double maxZnesek
+        +string status
+        +double dodeljeneTocke
+    }
+
+    class Administrator {
+        +int adminID
+        +upravljajPravila()
+        +upravljajNagrade()
+        +pregledStatistik()
+    }
+
+    Uporabnik <|-- ClanPrograma
+    ClanPrograma "1" --> "1" KarticaLojalnosti
+    ClanPrograma "1" --> "0..*" Nakup
+    ClanPrograma "1" --> "0..*" TockovnaTransakcija
+    ClanPrograma "0..*" --> "0..*" Nagrada : koristi
+    Administrator --> PraviloStatusa
+    Administrator --> PraviloTockovanja
+    Administrator --> Nagrada
+```
+
+---
+
+## 7. Zaključek
+
+Predlagana specifikacija zahtev opisuje celovito rešitev za podporo programu lojalnosti Maestro. Dokument zajema opis sistema, funkcionalne in nefunkcionalne zahteve, vmesnike, slovar izrazov in UML diagrame. Takšna specifikacija predstavlja dobro osnovo za nadaljnje modeliranje, načrtovanje arhitekture sistema, izdelavo podatkovnega modela ter implementacijo rešitve.
