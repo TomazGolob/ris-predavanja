@@ -1,0 +1,115 @@
+// https://dbdiagram.io/d DBML
+
+Table uporabnik {
+  email varchar [primary key]
+  ime varchar
+  priimek varchar
+  geslo varchar
+  jezik varchar
+  email_verificiran boolean
+  vloga varchar [note: 'clan, administrator']
+}
+
+Table clan_programa {
+  clanska_stevilka varchar [primary key]
+  uporabnik_email varchar
+  datum_vclanitve date
+  trenutno_stanje_tock integer
+}
+
+Table status_lojalnosti {
+  naziv_statusa varchar [primary key, note: 'osnovni, bronasti, srebrni, zlati']
+  opis text
+  rang integer
+}
+
+Table zgodovina_statusa {
+  clanska_stevilka varchar
+  naziv_statusa varchar
+  datum_zacetka date
+  datum_konca date
+  razlog_spremembe varchar
+}
+
+Table mesecni_nakup {
+  clanska_stevilka varchar
+  obdobje varchar [note: 'npr. 2026-03']
+  skupni_znesek_nakupov decimal
+}
+
+Table pravilo_tockovanja {
+  naziv_statusa varchar
+  spodnja_meja_zneska decimal
+  zgornja_meja_zneska decimal
+  stevilo_tock decimal
+}
+
+Table obracun_lojalnosti {
+  clanska_stevilka varchar
+  obdobje varchar
+  status_pred varchar
+  status_po varchar
+  skupni_znesek_nakupov decimal
+  dodeljene_tocke decimal
+}
+
+Table transakcija_tock {
+  clanska_stevilka varchar
+  datum_transakcije date
+  tip_transakcije varchar [note: 'pridobitev, unovcenje, korekcija']
+  stevilo_tock integer
+  opis text
+}
+
+Table nagrada {
+  naziv_nagrade varchar [primary key]
+  opis text
+  potrebno_stevilo_tock integer
+  aktivna boolean
+}
+
+Table unovcenje_nagrade {
+  clanska_stevilka varchar
+  naziv_nagrade varchar
+  datum_unovcenja date
+  porabljene_tocke integer
+  status_unovcenja varchar
+}
+
+Table pravilo_prehoda_statusa {
+  naziv_pravila varchar [primary key]
+  iz_statusa varchar
+  v_status varchar
+  opis_pogoja text
+}
+
+Table kartica_lojalnosti {
+  stevilka_kartice varchar [primary key]
+  clanska_stevilka varchar
+  datum_izdaje date
+}
+
+// Relacije
+
+Ref: clan_programa.uporabnik_email > uporabnik.email
+
+Ref: zgodovina_statusa.clanska_stevilka > clan_programa.clanska_stevilka
+Ref: zgodovina_statusa.naziv_statusa > status_lojalnosti.naziv_statusa
+
+Ref: mesecni_nakup.clanska_stevilka > clan_programa.clanska_stevilka
+
+Ref: pravilo_tockovanja.naziv_statusa > status_lojalnosti.naziv_statusa
+
+Ref: obracun_lojalnosti.clanska_stevilka > clan_programa.clanska_stevilka
+Ref: obracun_lojalnosti.status_pred > status_lojalnosti.naziv_statusa
+Ref: obracun_lojalnosti.status_po > status_lojalnosti.naziv_statusa
+
+Ref: transakcija_tock.clanska_stevilka > clan_programa.clanska_stevilka
+
+Ref: unovcenje_nagrade.clanska_stevilka > clan_programa.clanska_stevilka
+Ref: unovcenje_nagrade.naziv_nagrade > nagrada.naziv_nagrade
+
+Ref: kartica_lojalnosti.clanska_stevilka > clan_programa.clanska_stevilka
+
+Ref: pravilo_prehoda_statusa.iz_statusa > status_lojalnosti.naziv_statusa
+Ref: pravilo_prehoda_statusa.v_status > status_lojalnosti.naziv_statusa
