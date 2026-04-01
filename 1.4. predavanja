@@ -343,7 +343,7 @@ flowchart TD
     G --> G4[6.4 Uporaba Oracle podatkovne baze]
 ```
 
-![Konceptualni model](konceptualni_model.png)
+![Konceptualni model](konceptualni_model.jpg)
 
 ---
 
