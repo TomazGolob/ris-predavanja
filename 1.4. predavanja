@@ -368,9 +368,6 @@ flowchart TD
 ### Rewards Catalog
 ![Rewards Catalog](design/maestro_rewards_catalog/screen.png)
 
-### Royal
-![Royal](design/maestro_royal/screen.png)
-
 ---
 
 ## 8. Zaključek
