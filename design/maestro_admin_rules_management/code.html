@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+
+<html class="light" lang="sl"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Maestro Admin - Rules Management</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "tertiary-fixed-dim": "#c7c6c6",
+                        "primary-fixed-dim": "#a7cbe4",
+                        "on-background": "#191c1d",
+                        "on-secondary-fixed-variant": "#5d4201",
+                        "surface-container-high": "#e7e8e9",
+                        "error": "#ba1a1a",
+                        "surface-variant": "#e1e3e4",
+                        "on-tertiary-container": "#909090",
+                        "tertiary-container": "#282929",
+                        "outline-variant": "#c2c7cc",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-fixed": "#e4e2e2",
+                        "surface-bright": "#f8f9fa",
+                        "primary": "#001723",
+                        "surface-container": "#edeeef",
+                        "inverse-on-surface": "#f0f1f2",
+                        "secondary": "#775a19",
+                        "background": "#f8f9fa",
+                        "surface-container-highest": "#e1e3e4",
+                        "inverse-primary": "#a7cbe4",
+                        "on-secondary-fixed": "#261900",
+                        "on-error-container": "#93000a",
+                        "on-surface": "#191c1d",
+                        "surface-container-lowest": "#ffffff",
+                        "on-error": "#ffffff",
+                        "secondary-fixed": "#ffdea5",
+                        "secondary-fixed-dim": "#e9c176",
+                        "on-secondary": "#ffffff",
+                        "primary-fixed": "#c4e7ff",
+                        "on-primary-container": "#7195ac",
+                        "on-tertiary-fixed": "#1b1c1c",
+                        "surface": "#f8f9fa",
+                        "tertiary": "#141515",
+                        "secondary-container": "#fed488",
+                        "outline": "#72787d",
+                        "error-container": "#ffdad6",
+                        "on-primary-fixed": "#001e2c",
+                        "on-primary": "#ffffff",
+                        "inverse-surface": "#2e3132",
+                        "on-primary-fixed-variant": "#264b5f",
+                        "on-tertiary-fixed-variant": "#464747",
+                        "primary-container": "#002d40",
+                        "on-secondary-container": "#785a1a",
+                        "surface-container-low": "#f3f4f5",
+                        "on-surface-variant": "#42484c",
+                        "surface-dim": "#d9dadb",
+                        "surface-tint": "#3f6378"
+                    },
+                    fontFamily: {
+                        "headline": ["Manrope"],
+                        "body": ["Manrope"],
+                        "label": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .aura-basic { background: radial-gradient(circle at center, #a7cbe4 0%, transparent 70%); }
+        .aura-bronze { background: radial-gradient(circle at center, #5d4201 0%, transparent 70%); }
+        .aura-silver { background: radial-gradient(circle at center, #c7c6c6 0%, transparent 70%); }
+        .aura-gold { background: radial-gradient(circle at center, #775a19 0%, transparent 70%); }
+    </style>
+</head>
+<body class="bg-surface font-body text-on-surface">
+<!-- Side Navigation Shell -->
+<aside class="h-screen w-72 fixed left-0 top-0 bg-slate-50 dark:bg-slate-900 flex flex-col h-full p-6 space-y-2 z-40">
+<div class="mb-10 px-4">
+<h1 class="text-xl font-black text-sky-950 dark:text-white uppercase tracking-widest">Maestro Admin</h1>
+<p class="font-['Inter'] text-xs font-medium text-slate-500 uppercase tracking-widest mt-1">Loyalty Engine</p>
+</div>
+<nav class="flex-1 space-y-1">
+<div class="text-slate-500 dark:text-slate-400 py-3 px-4 font-['Manrope'] font-semibold text-sm tracking-wide hover:translate-x-1 hover:text-sky-900 dark:hover:text-white transition-all duration-200 cursor-pointer active:scale-95 flex items-center gap-3">
+<span class="material-symbols-outlined">analytics</span>
+<span>Stats</span>
+</div>
+<!-- ACTIVE TAB: Rules Management -->
+<div class="bg-white dark:bg-slate-800 text-sky-900 dark:text-sky-400 shadow-sm rounded-lg py-3 px-4 font-['Manrope'] font-semibold text-sm tracking-wide cursor-pointer active:scale-95 flex items-center gap-3">
+<span class="material-symbols-outlined">rule</span>
+<span>Rules</span>
+</div>
+<div class="text-slate-500 dark:text-slate-400 py-3 px-4 font-['Manrope'] font-semibold text-sm tracking-wide hover:translate-x-1 hover:text-sky-900 dark:hover:text-white transition-all duration-200 cursor-pointer active:scale-95 flex items-center gap-3">
+<span class="material-symbols-outlined">card_giftcard</span>
+<span>Rewards Management</span>
+</div>
+<div class="text-slate-500 dark:text-slate-400 py-3 px-4 font-['Manrope'] font-semibold text-sm tracking-wide hover:translate-x-1 hover:text-sky-900 dark:hover:text-white transition-all duration-200 cursor-pointer active:scale-95 flex items-center gap-3">
+<span class="material-symbols-outlined">group</span>
+<span>Users</span>
+</div>
+<div class="text-slate-500 dark:text-slate-400 py-3 px-4 font-['Manrope'] font-semibold text-sm tracking-wide hover:translate-x-1 hover:text-sky-900 dark:hover:text-white transition-all duration-200 cursor-pointer active:scale-95 flex items-center gap-3">
+<span class="material-symbols-outlined">history</span>
+<span>Audit Log</span>
+</div>
+<div class="text-slate-500 dark:text-slate-400 py-3 px-4 font-['Manrope'] font-semibold text-sm tracking-wide hover:translate-x-1 hover:text-sky-900 dark:hover:text-white transition-all duration-200 cursor-pointer active:scale-95 flex items-center gap-3">
+<span class="material-symbols-outlined">tune</span>
+<span>Settings</span>
+</div>
+</nav>
+<div class="pt-6 border-t border-slate-200 dark:border-slate-800 space-y-1">
+<div class="text-slate-500 dark:text-slate-400 py-3 px-4 font-['Manrope'] font-semibold text-sm tracking-wide hover:translate-x-1 hover:text-sky-900 dark:hover:text-white transition-all duration-200 cursor-pointer active:scale-95 flex items-center gap-3">
+<span class="material-symbols-outlined">help</span>
+<span>Help Center</span>
+</div>
+<div class="text-slate-500 dark:text-slate-400 py-3 px-4 font-['Manrope'] font-semibold text-sm tracking-wide hover:translate-x-1 hover:text-sky-900 dark:hover:text-white transition-all duration-200 cursor-pointer active:scale-95 flex items-center gap-3">
+<span class="material-symbols-outlined">logout</span>
+<span>Logout</span>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-72 min-h-screen p-10 bg-surface">
+<header class="flex justify-between items-end mb-12">
+<div>
+<h2 class="text-4xl font-extrabold tracking-tight text-primary font-headline">Rules Management</h2>
+<p class="text-on-surface-variant mt-2 font-medium">Configure point multipliers and status threshold logic.</p>
+</div>
+<div class="flex gap-4">
+<button class="px-6 py-3 rounded-xl border border-outline-variant text-on-surface font-semibold hover:bg-surface-container transition-all active:scale-95">
+                    Ponastavi
+                </button>
+<button class="px-8 py-3 rounded-xl bg-primary text-on-primary font-bold shadow-lg hover:opacity-90 transition-all active:scale-95">
+                    Shrani spremembe
+                </button>
+</div>
+</header>
+<div class="grid grid-cols-12 gap-8">
+<!-- Section 1: Pravila izračuna točk -->
+<section class="col-span-12 lg:col-span-12 space-y-6">
+<div class="bg-surface-container-low rounded-xl p-8">
+<div class="flex items-center gap-3 mb-8">
+<span class="material-symbols-outlined text-primary text-3xl">calculate</span>
+<h3 class="text-2xl font-bold tracking-tight">Pravila izračuna točk</h3>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-separate border-spacing-y-2">
+<thead>
+<tr class="text-on-surface-variant font-label text-sm uppercase tracking-wider">
+<th class="pb-4 pl-4">Znesek nakupa (EUR)</th>
+<th class="pb-4"><div class="flex items-center gap-2"><div class="w-2 h-2 rounded-full bg-primary-fixed-dim"></div>Basic</div></th>
+<th class="pb-4"><div class="flex items-center gap-2"><div class="w-2 h-2 rounded-full bg-on-secondary-fixed-variant"></div>Bronze</div></th>
+<th class="pb-4"><div class="flex items-center gap-2"><div class="w-2 h-2 rounded-full bg-tertiary-fixed-dim"></div>Silver</div></th>
+<th class="pb-4 pr-4"><div class="flex items-center gap-2"><div class="w-2 h-2 rounded-full bg-secondary"></div>Gold</div></th>
+</tr>
+</thead>
+<tbody>
+<!-- Row 1 -->
+<tr class="bg-surface-container-lowest shadow-sm rounded-lg group transition-all">
+<td class="py-5 pl-6 font-semibold text-primary rounded-l-lg">do 200 EUR</td>
+<td class="py-3">
+<input class="w-24 bg-surface-container-low border-none rounded-lg focus:ring-2 focus:ring-primary text-center font-medium" type="text" value="1.0x"/>
+</td>
+<td class="py-3">
+<input class="w-24 bg-surface-container-low border-none rounded-lg focus:ring-2 focus:ring-primary text-center font-medium" type="text" value="1.1x"/>
+</td>
+<td class="py-3">
+<input class="w-24 bg-surface-container-low border-none rounded-lg focus:ring-2 focus:ring-primary text-center font-medium" type="text" value="1.2x"/>
+</td>
+<td class="py-3 pr-6 rounded-r-lg">
+<input class="w-24 bg-surface-container-low border-none rounded-lg focus:ring-2 focus:ring-primary text-center font-medium" type="text" value="1.5x"/>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="bg-surface-container-lowest shadow-sm rounded-lg group transition-all">
+<td class="py-5 pl-6 font-semibold text-primary rounded-l-lg">200 - 1000 EUR</td>
+<td class="py-3">
+<input class="w-24 bg-surface-container-low border-none rounded-lg focus:ring-2 focus:ring-primary text-center font-medium" type="text" value="1.2x"/>
+</td>
+<td class="py-3">
+<input class="w-24 bg-surface-container-low border-none rounded-lg focus:ring-2 focus:ring-primary text-center font-medium" type="text" value="1.3x"/>
+</td>
+<td class="py-3">
+<input class="w-24 bg-surface-container-low border-none rounded-lg focus:ring-2 focus:ring-primary text-center font-medium" type="text" value="1.5x"/>
+</td>
+<td class="py-3 pr-6 rounded-r-lg">
+<input class="w-24 bg-surface-container-low border-none rounded-lg focus:ring-2 focus:ring-primary text-center font-medium" type="text" value="2.0x"/>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="bg-surface-container-lowest shadow-sm rounded-lg group transition-all">
+<td class="py-5 pl-6 font-semibold text-primary rounded-l-lg">nad 1000 EUR</td>
+<td class="py-3">
+<input class="w-24 bg-surface-container-low border-none rounded-lg focus:ring-2 focus:ring-primary text-center font-medium" type="text" value="1.5x"/>
+</td>
+<td class="py-3">
+<input class="w-24 bg-surface-container-low border-none rounded-lg focus:ring-2 focus:ring-primary text-center font-medium" type="text" value="1.8x"/>
+</td>
+<td class="py-3">
+<input class="w-24 bg-surface-container-low border-none rounded-lg focus:ring-2 focus:ring-primary text-center font-medium" type="text" value="2.0x"/>
+</td>
+<td class="py-3 pr-6 rounded-r-lg">
+<input class="w-24 bg-surface-container-low border-none rounded-lg focus:ring-2 focus:ring-primary text-center font-medium" type="text" value="3.0x"/>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<!-- Section 2: Pravila statusov -->
+<section class="col-span-12 lg:col-span-12">
+<div class="bg-surface-container-low rounded-xl p-8">
+<div class="flex items-center gap-3 mb-10">
+<span class="material-symbols-outlined text-primary text-3xl">military_tech</span>
+<h3 class="text-2xl font-bold tracking-tight">Pravila statusov</h3>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<!-- Bronze Card -->
+<div class="bg-surface-container-lowest p-6 rounded-xl relative overflow-hidden group">
+<div class="absolute -top-10 -right-10 w-32 h-32 aura-bronze opacity-20"></div>
+<div class="flex items-center gap-3 mb-6 relative">
+<span class="material-symbols-outlined text-on-secondary-fixed-variant">workspace_premium</span>
+<span class="font-bold text-lg">Bronze Status</span>
+</div>
+<div class="space-y-4 relative">
+<div>
+<label class="block text-xs font-label font-bold text-on-surface-variant uppercase tracking-tighter mb-1">Prag za dosego (EUR)</label>
+<div class="relative">
+<input class="w-full bg-surface-container-low border-none rounded-lg pl-4 pr-12 py-3 focus:ring-2 focus:ring-primary font-bold text-primary" type="number" value="150"/>
+<span class="absolute right-4 top-3 text-on-surface-variant font-medium">EUR</span>
+</div>
+</div>
+<div>
+<label class="block text-xs font-label font-bold text-on-surface-variant uppercase tracking-tighter mb-1">Vzdrževanje (EUR)</label>
+<div class="relative">
+<input class="w-full bg-surface-container-low border-none rounded-lg pl-4 pr-12 py-3 focus:ring-2 focus:ring-primary font-bold text-primary" type="number" value="100"/>
+<span class="absolute right-4 top-3 text-on-surface-variant font-medium">EUR</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Silver Card -->
+<div class="bg-surface-container-lowest p-6 rounded-xl relative overflow-hidden group">
+<div class="absolute -top-10 -right-10 w-32 h-32 aura-silver opacity-20"></div>
+<div class="flex items-center gap-3 mb-6 relative">
+<span class="material-symbols-outlined text-tertiary-fixed-dim">stars</span>
+<span class="font-bold text-lg">Silver Status</span>
+</div>
+<div class="space-y-4 relative">
+<div>
+<label class="block text-xs font-label font-bold text-on-surface-variant uppercase tracking-tighter mb-1">Prag za dosego (EUR)</label>
+<div class="relative">
+<input class="w-full bg-surface-container-low border-none rounded-lg pl-4 pr-12 py-3 focus:ring-2 focus:ring-primary font-bold text-primary" type="number" value="499"/>
+<span class="absolute right-4 top-3 text-on-surface-variant font-medium">EUR</span>
+</div>
+</div>
+<div>
+<label class="block text-xs font-label font-bold text-on-surface-variant uppercase tracking-tighter mb-1">Vzdrževanje (EUR)</label>
+<div class="relative">
+<input class="w-full bg-surface-container-low border-none rounded-lg pl-4 pr-12 py-3 focus:ring-2 focus:ring-primary font-bold text-primary" type="number" value="200"/>
+<span class="absolute right-4 top-3 text-on-surface-variant font-medium">EUR</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Gold Card -->
+<div class="bg-surface-container-lowest p-6 rounded-xl relative overflow-hidden group">
+<div class="absolute -top-10 -right-10 w-32 h-32 aura-gold opacity-30"></div>
+<div class="flex items-center gap-3 mb-6 relative">
+<span class="material-symbols-outlined text-secondary">diamond</span>
+<span class="font-bold text-lg">Gold Status</span>
+</div>
+<div class="space-y-4 relative">
+<div>
+<label class="block text-xs font-label font-bold text-on-surface-variant uppercase tracking-tighter mb-1">Prag za dosego (EUR)</label>
+<div class="relative">
+<input class="w-full bg-surface-container-low border-none rounded-lg pl-4 pr-12 py-3 focus:ring-2 focus:ring-primary font-bold text-primary" type="number" value="1200"/>
+<span class="absolute right-4 top-3 text-on-surface-variant font-medium">EUR</span>
+</div>
+</div>
+<div>
+<label class="block text-xs font-label font-bold text-on-surface-variant uppercase tracking-tighter mb-1">Vzdrževanje (EUR)</label>
+<div class="relative">
+<input class="w-full bg-surface-container-low border-none rounded-lg pl-4 pr-12 py-3 focus:ring-2 focus:ring-primary font-bold text-primary" type="number" value="600"/>
+<span class="absolute right-4 top-3 text-on-surface-variant font-medium">EUR</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Advanced Configuration Logic (Asymmetric Layout) -->
+<section class="col-span-12 grid grid-cols-1 md:grid-cols-2 gap-8">
+<div class="bg-surface-container-low rounded-xl p-8 flex flex-col justify-between">
+<div>
+<h4 class="text-xl font-bold mb-4">Dodatne nastavitve cikla</h4>
+<p class="text-on-surface-variant text-sm mb-6 leading-relaxed">
+                            Nastavite obdobje v katerem se seštevajo točke za prehod v naslednji status. Po izteku tega obdobja se status preveri glede na pogoje vzdrževanja.
+                        </p>
+<div class="flex gap-6 items-center">
+<div class="flex-1">
+<label class="block text-xs font-bold text-on-surface-variant mb-1 uppercase">Obdobje (meseci)</label>
+<input class="w-full bg-surface-container-lowest border-none rounded-lg py-3 px-4 font-bold text-primary focus:ring-2 focus:ring-primary" type="number" value="12"/>
+</div>
+<div class="flex-1">
+<label class="block text-xs font-bold text-on-surface-variant mb-1 uppercase">Zakasnitev uveljavitve</label>
+<input class="w-full bg-surface-container-lowest border-none rounded-lg py-3 px-4 font-bold text-primary focus:ring-2 focus:ring-primary" type="number" value="24"/>
+</div>
+</div>
+</div>
+</div>
+<div class="relative rounded-xl overflow-hidden min-h-[250px]">
+<img alt="Analytics dashboard visual" class="absolute inset-0 w-full h-full object-cover" data-alt="Modern abstract analytical dashboard visualization with clean geometric lines and soft blue and gold light refractions" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBogVaHHnsSGlXjGqFZya5CG5LsxdVmYgNcGQ4VnIYWdE4oLsIqBFP1Ic2H4GzB5JT982UtGRYbZwxMfFuRWXA7lzN-fGpC9RqoSmDgZ-O89WrcBJ3YcSyEf-xBAiPIMemzXg8oO1du5p4mLZs6ZKP0bxk794dC6ry-kQPb_nYpWqO0MNb53QMEFnKLhJKVJLr5MvCCO3KrqRxOUOT9U00kVkn76Sx7VFzPyxbB_3pFGegYjkvTKscTMvyGaOpIi71lov7bdmPk81k"/>
+<div class="absolute inset-0 bg-primary/40 backdrop-blur-[2px] p-8 flex flex-col justify-end">
+<span class="inline-block px-3 py-1 bg-secondary text-on-secondary rounded-full text-[10px] font-bold uppercase tracking-widest mb-2 w-fit">System Logic</span>
+<h4 class="text-white text-xl font-bold">Avtomatsko posodabljanje</h4>
+<p class="text-white/80 text-sm mt-2">Sistem vsak dan ob 00:00 GMT preveri pogoje za vse uporabnike in izvede potrebne prehode med statusi.</p>
+</div>
+</div>
+</section>
+</div>
+<footer class="mt-16 pt-8 border-t border-surface-variant flex justify-between items-center text-on-surface-variant text-sm">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+<span>Vsi sistemi delujejo normalno</span>
+</div>
+<p>© 2024 Maestro Loyalty Engine • Admin Panel v2.4.1</p>
+</footer>
+</main>
+</body></html>

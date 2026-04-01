@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Rewards Catalog | Maestro</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&amp;family=Inter:wght@300..700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary-container": "#002d40",
+                        "surface-tint": "#3f6378",
+                        "on-secondary-fixed": "#261900",
+                        "primary-fixed-dim": "#a7cbe4",
+                        "on-primary-fixed": "#001e2c",
+                        "secondary": "#775a19",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "inverse-primary": "#a7cbe4",
+                        "surface": "#f8f9fa",
+                        "secondary-container": "#fed488",
+                        "inverse-on-surface": "#f0f1f2",
+                        "on-primary-container": "#7195ac",
+                        "on-primary": "#ffffff",
+                        "on-tertiary-container": "#909090",
+                        "tertiary": "#141515",
+                        "surface-variant": "#e1e3e4",
+                        "outline-variant": "#c2c7cc",
+                        "error": "#ba1a1a",
+                        "inverse-surface": "#2e3132",
+                        "surface-container-highest": "#e1e3e4",
+                        "error-container": "#ffdad6",
+                        "on-tertiary-fixed": "#1b1c1c",
+                        "on-error": "#ffffff",
+                        "secondary-fixed-dim": "#e9c176",
+                        "on-error-container": "#93000a",
+                        "surface-container-high": "#e7e8e9",
+                        "primary": "#001723",
+                        "on-surface-variant": "#42484c",
+                        "surface-container-low": "#f3f4f5",
+                        "on-secondary-fixed-variant": "#5d4201",
+                        "surface-bright": "#f8f9fa",
+                        "outline": "#72787d",
+                        "tertiary-fixed": "#e4e2e2",
+                        "surface-container": "#edeeef",
+                        "on-secondary-container": "#785a1a",
+                        "secondary-fixed": "#ffdea5",
+                        "on-background": "#191c1d",
+                        "background": "#f8f9fa",
+                        "on-surface": "#191c1d",
+                        "surface-dim": "#d9dadb",
+                        "on-primary-fixed-variant": "#264b5f",
+                        "primary-fixed": "#c4e7ff",
+                        "on-tertiary-fixed-variant": "#464747",
+                        "tertiary-fixed-dim": "#c7c6c6",
+                        "tertiary-container": "#282929",
+                        "on-tertiary": "#ffffff"
+                    },
+                    fontFamily: {
+                        "headline": ["Manrope"],
+                        "body": ["Manrope"],
+                        "label": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .luxury-blur {
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="bg-surface font-body text-on-surface antialiased">
+<!-- TopNavBar Component -->
+<nav class="fixed top-0 w-full z-50 bg-white/70 dark:bg-slate-950/70 backdrop-blur-xl shadow-[0_8px_40px_rgba(0,0,0,0.04)]">
+<div class="max-w-screen-2xl mx-auto flex justify-between items-center px-8 py-4">
+<div class="flex items-center gap-12">
+<span class="text-2xl font-bold tracking-tighter text-sky-950 dark:text-white font-headline">Maestro</span>
+<div class="hidden md:flex items-center gap-8 font-['Manrope'] tracking-tight">
+<a class="text-slate-500 dark:text-slate-400 font-medium hover:text-sky-900 transition-all duration-300" href="#">Dashboard</a>
+<a class="text-sky-900 dark:text-sky-400 font-bold border-b-2 border-sky-900 dark:border-sky-400 pb-1" href="#">Rewards</a>
+<a class="text-slate-500 dark:text-slate-400 font-medium hover:text-sky-900 transition-all duration-300" href="#">Profile</a>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<!-- Search Bar -->
+<div class="relative hidden lg:block">
+<input class="bg-slate-100/50 dark:bg-slate-800/50 border-none rounded-full px-6 py-2 w-64 text-sm focus:ring-2 focus:ring-primary focus:bg-white transition-all outline-none" placeholder="Search rewards..." type="text"/>
+<span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 text-lg">search</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 rounded-full hover:bg-slate-50/50 dark:hover:bg-slate-900/50 transition-all duration-300 scale-98 active:opacity-80">
+<span class="material-symbols-outlined text-sky-900 dark:text-sky-100">notifications</span>
+</button>
+<button class="p-2 rounded-full hover:bg-slate-50/50 dark:hover:bg-slate-900/50 transition-all duration-300 scale-98 active:opacity-80">
+<span class="material-symbols-outlined text-sky-900 dark:text-sky-100">settings</span>
+</button>
+<div class="h-10 w-10 rounded-full bg-primary-fixed-dim overflow-hidden ml-2 ring-2 ring-white shadow-sm cursor-pointer">
+<img alt="User profile avatar" data-alt="close-up portrait of a professional man with friendly expression in high-key studio lighting with soft shadows" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC7lbjKE5TFiAJB473MAuBFna3ziyuM_3chAiwF7uhQiXdwdSq44d7ZdBBgbpk50AJjQ2hgViuGqU7A9c_mgDpP8-S43t7tnYypwYgMLnUMHjePqXw5PhaiHBJSQIzA004a1Oto2C0kQjZIm31-xG04nB3mD3mjZ9hFFz-5NP_gKL2OYRh0jNKvSEkbiv4LFsJTyMsGfJ1me4mSPhjBQAgrbmX_0WEnpzlCKhpnEyLrP6M1VYjPMgPeltOhfwC4iU9EL-RoiAmf8SM"/>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-slate-100/50 dark:bg-slate-800/50 h-px w-full"></div>
+</nav>
+<main class="pt-28 pb-20 px-8 max-w-screen-2xl mx-auto">
+<!-- Editorial Header Section -->
+<header class="mb-16 space-y-4 max-w-3xl">
+<span class="font-label text-sm uppercase tracking-widest text-secondary font-bold">The Catalog</span>
+<h1 class="text-6xl font-extrabold font-headline tracking-tighter text-primary leading-none">Curated Rewards for Global Citizens</h1>
+<p class="text-lg text-on-surface-variant leading-relaxed opacity-80">Unlock exclusive experiences and premium goods tailored to your lifestyle. Your loyalty, elevated.</p>
+</header>
+<!-- Search & Filter Bar -->
+<section class="flex flex-col md:flex-row gap-6 items-end mb-12 justify-between">
+<div class="flex flex-wrap gap-3">
+<button class="bg-primary text-white px-6 py-2.5 rounded-full text-sm font-semibold hover:bg-primary-container transition-all">All Experiences</button>
+<button class="bg-surface-container-low text-on-surface-variant px-6 py-2.5 rounded-full text-sm font-semibold hover:bg-surface-container-high transition-all">Dining</button>
+<button class="bg-surface-container-low text-on-surface-variant px-6 py-2.5 rounded-full text-sm font-semibold hover:bg-surface-container-high transition-all">Travel</button>
+<button class="bg-surface-container-low text-on-surface-variant px-6 py-2.5 rounded-full text-sm font-semibold hover:bg-surface-container-high transition-all">Lifestyle</button>
+<button class="bg-surface-container-low text-on-surface-variant px-6 py-2.5 rounded-full text-sm font-semibold hover:bg-surface-container-high transition-all">Fashion</button>
+</div>
+<div class="flex items-center gap-4 text-sm font-label">
+<span class="text-on-surface-variant opacity-60">Sort by:</span>
+<div class="flex items-center gap-1 font-bold cursor-pointer hover:text-primary transition-colors">
+                    Featured <span class="material-symbols-outlined text-sm">expand_more</span>
+</div>
+</div>
+</section>
+<!-- Rewards Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-16">
+<!-- Reward Card 1 -->
+<article class="group cursor-pointer">
+<div class="aspect-[4/5] w-full overflow-hidden rounded-xl bg-surface-container mb-6 relative">
+<img alt="Artisan Coffee" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" data-alt="Close-up of a perfectly poured latte with intricate leaf art in a ceramic cup on a dark rustic wooden table" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCAf0LNBorMW8Mfce9k2lmK8jaQ1LXAj_3rgB7bHxzhkOuQnN6gA9PFaWxqZFWaQylPnWF01_Ev8F8Zm9pHSnzey0vvOx1fNIsQYek7tiEAsATOCTlyos29I_aPddMome7S-VixoZxWJRPGG58Rk241VAdkdu_G_N7wMdaeKq-BHIyD6fbaqq5JuaHG0FgIKqZu9cLCx786UCkyMmkHQ2cKeZhzbWa_0j_KC7NwGTL79hKuOPbo593i3XrFbyixxnWbz60VhzQQP4s"/>
+<div class="absolute top-4 right-4 bg-white/90 luxury-blur px-3 py-1.5 rounded-full shadow-sm">
+<span class="font-label text-xs font-bold text-primary flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">stars</span> 
+                            450 PTS
+                        </span>
+</div>
+</div>
+<div class="space-y-3">
+<div class="flex justify-between items-start">
+<h3 class="text-2xl font-bold font-headline tracking-tight group-hover:text-secondary transition-colors leading-tight">Brezplačna kava Artisan</h3>
+<span class="bg-surface-container-high px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider text-on-surface-variant">Dining</span>
+</div>
+<p class="text-on-surface-variant leading-relaxed text-sm">Experience the finest micro-roasts prepared by our master baristas in the heart of the city.</p>
+<div class="pt-4 flex items-center justify-between">
+<button class="font-label text-xs font-bold uppercase tracking-widest border-b-2 border-primary pb-0.5 hover:text-secondary hover:border-secondary transition-all">Redeem Reward</button>
+</div>
+</div>
+</article>
+<!-- Reward Card 2 -->
+<article class="group cursor-pointer">
+<div class="aspect-[4/5] w-full overflow-hidden rounded-xl bg-surface-container mb-6 relative">
+<img alt="Fashion Discount" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" data-alt="Luxury fashion boutique interior with high-end designer clothing on minimalist brass racks and soft ambient lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBBkjUh4DFFBlTs7oOJuvElFH0IOvYLyNFKzFSzInA3fPKjR5WhzqCArQPKT3J40M-Z038_xq82ods3kLpLSMuWE-xVWJfhlEvrilrZGOGv3ATaF-Of4XOb7eGApTzAGiT0V2-O07kEO59-EnFNY2ECrQfZ4nH-t-Bmi7JtKt0lAXc-jwJv0B2XgX6yyJsR59Xli9__ZTPD7l9BaCVAH5jxerm6j77LOhXxizKdGuLfShLJ36r3Jn15vgZQrCUT2f_zPjTMCfOwN1o"/>
+<div class="absolute top-4 right-4 bg-white/90 luxury-blur px-3 py-1.5 rounded-full shadow-sm">
+<span class="font-label text-xs font-bold text-primary flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">stars</span> 
+                            1,200 PTS
+                        </span>
+</div>
+<div class="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+</div>
+<div class="space-y-3">
+<div class="flex justify-between items-start">
+<h3 class="text-2xl font-bold font-headline tracking-tight group-hover:text-secondary transition-colors leading-tight">15% popusta na modo</h3>
+<span class="bg-surface-container-high px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider text-on-surface-variant">Fashion</span>
+</div>
+<p class="text-on-surface-variant leading-relaxed text-sm">Exclusive access to the seasonal collection at select luxury boutiques. Elevate your wardrobe with timeless pieces.</p>
+<div class="pt-4 flex items-center justify-between">
+<button class="font-label text-xs font-bold uppercase tracking-widest border-b-2 border-primary pb-0.5 hover:text-secondary hover:border-secondary transition-all">Redeem Reward</button>
+</div>
+</div>
+</article>
+<!-- Reward Card 3 -->
+<article class="group cursor-pointer">
+<div class="aspect-[4/5] w-full overflow-hidden rounded-xl bg-surface-container mb-6 relative">
+<img alt="Royal Spa" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" data-alt="Serene luxury spa pool with turquoise water reflecting marble arches and soft candlelight in an ancient architectural setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAJi7WAhIBJN1gibSyV0ZFhwnYWW7rgG92X7MTXbkEaiZztsNb3pGvdjIJTON--f4P8KGKf_7IN5Hp8I1Li6hJlPfJndudMF2M2cjxHdmrD5jg9kBufQb6JLH7YbiJUFEMPJY4uIz-anMtQ232FW1UdezCC2BZqRVoxWNpeza3RFg2aAJUdPi_evOUsZAqvG24Os1G092Hc7nI_KWT0ud9-myvxUzj4QsPPfxhW1FoGWiVWLEdReF4fd60HA1knU5e23ucowF65SjM"/>
+<div class="absolute top-4 right-4 bg-white/90 luxury-blur px-3 py-1.5 rounded-full shadow-sm">
+<span class="font-label text-xs font-bold text-primary flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">stars</span> 
+                            3,500 PTS
+                        </span>
+</div>
+</div>
+<div class="space-y-3">
+<div class="flex justify-between items-start">
+<h3 class="text-2xl font-bold font-headline tracking-tight group-hover:text-secondary transition-colors leading-tight">Celodnevni vstop v Royal Spa</h3>
+<span class="bg-surface-container-high px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider text-on-surface-variant">Wellness</span>
+</div>
+<p class="text-on-surface-variant leading-relaxed text-sm">A sanctuary of tranquility. Enjoy full access to thermal baths, steam rooms, and the infinity rooftop pool.</p>
+<div class="pt-4 flex items-center justify-between">
+<button class="font-label text-xs font-bold uppercase tracking-widest border-b-2 border-primary pb-0.5 hover:text-secondary hover:border-secondary transition-all">Redeem Reward</button>
+</div>
+</div>
+</article>
+<!-- Reward Card 4 -->
+<article class="group cursor-pointer">
+<div class="aspect-[4/5] w-full overflow-hidden rounded-xl bg-surface-container mb-6 relative">
+<img alt="Michelin Dining" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" data-alt="Exquisitely plated gourmet appetizer on a designer plate with microgreens and colorful sauce drops in a dark ambient restaurant" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBPay5A9nrWk1S5XnO1g5wFnHk11IdgH0Ty1CTXrRYv8zUAVJkiz61SIhKbE03dQlgZ-DnDmn9W53QkaDURU5Q6QnZikACoifFrTG2Hdar4BkAdGETehlrd0HxJxQfvehQ6uPHcF_zQh9HfiiQ1t1W000lOvk4_VmT1quCrLSuczgyBpEbgnnoJrUpYbQpH4ZkZuBFejmqrqkqNGw9Udd8yNdNJUITUWPoqt9IqfyyhvJVY72bWVesldb9RHtIF8JID5R1_u1_Bw3I"/>
+<div class="absolute top-4 right-4 bg-white/90 luxury-blur px-3 py-1.5 rounded-full shadow-sm">
+<span class="font-label text-xs font-bold text-primary flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">stars</span> 
+                            8,000 PTS
+                        </span>
+</div>
+</div>
+<div class="space-y-3">
+<div class="flex justify-between items-start">
+<h3 class="text-2xl font-bold font-headline tracking-tight group-hover:text-secondary transition-colors leading-tight">Private Chef Table</h3>
+<span class="bg-surface-container-high px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider text-on-surface-variant">Gastronomy</span>
+</div>
+<p class="text-on-surface-variant leading-relaxed text-sm">An 8-course tasting menu curated specifically for you by a Michelin-starred visionary.</p>
+<div class="pt-4 flex items-center justify-between">
+<button class="font-label text-xs font-bold uppercase tracking-widest border-b-2 border-primary pb-0.5 hover:text-secondary hover:border-secondary transition-all">Redeem Reward</button>
+</div>
+</div>
+</article>
+<!-- Reward Card 5 -->
+<article class="group cursor-pointer">
+<div class="aspect-[4/5] w-full overflow-hidden rounded-xl bg-surface-container mb-6 relative">
+<img alt="Hotel Stay" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" data-alt="Elegant luxury hotel suite with plush white bedding, floor to ceiling windows overlooking a city skyline at dusk" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDznZicyAEsWD4mjKBtM0Lhn3P0P4rkt1WNDxrQMrOq1qNCeuBjIIO4cabLaJUEr1Kf_DlYmDrmkr-xMQaoCEGIdepXtIyAMrwLMc7Anjbk2WV2sVO2lEA_0psdhoWvaQzSzslpFzKxlRdQy0HCfmdUTuJSfbfdXLM7SVRczgmTC9VcBK4_F47zIdlaUlPc2z2dQ__5lPwppgJ6IKbqvM6opcHOPPa-SaoxGkt7w6U6IsDdKNksYdAiBJNVC6qiJeGiAurayFxbf1Y"/>
+<div class="absolute top-4 right-4 bg-white/90 luxury-blur px-3 py-1.5 rounded-full shadow-sm">
+<span class="font-label text-xs font-bold text-primary flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">stars</span> 
+                            12,500 PTS
+                        </span>
+</div>
+</div>
+<div class="space-y-3">
+<div class="flex justify-between items-start">
+<h3 class="text-2xl font-bold font-headline tracking-tight group-hover:text-secondary transition-colors leading-tight">Weekend at The Grand</h3>
+<span class="bg-surface-container-high px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider text-on-surface-variant">Travel</span>
+</div>
+<p class="text-on-surface-variant leading-relaxed text-sm">Two nights in a superior suite with inclusive breakfast and airport limousine transfer.</p>
+<div class="pt-4 flex items-center justify-between">
+<button class="font-label text-xs font-bold uppercase tracking-widest border-b-2 border-primary pb-0.5 hover:text-secondary hover:border-secondary transition-all">Redeem Reward</button>
+</div>
+</div>
+</article>
+<!-- Reward Card 6 -->
+<article class="group cursor-pointer">
+<div class="aspect-[4/5] w-full overflow-hidden rounded-xl bg-surface-container mb-6 relative">
+<img alt="Watch" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" data-alt="Minimalist luxury wristwatch with silver case and black leather strap isolated on a clean neutral background with elegant lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB_rAB_1UMangZDJ2ZgJ_kzOVq_c1cnNC2ioCaAi89mmMu3x8TWCNgJ4cqSSLFC53RroY7hOE2EXvvckp1R_AtPnb8-p_CrbvIYzjtkfaxQU0b3VmfExuBkv5AUMFkzlnQtWsnL8CIjiS8Lyx_vH1bnXGNRu7ITUEfyPYHDKHHxzPMXKhE30LzCVm8JbrkHwJASqsHDlYmmwPkGIFNye65lS36Iv8xI1I4UHBth6Q-yQ1Y3p5gDzt5xccJNpC0jdi6RAvc06Lr8z9g"/>
+<div class="absolute top-4 right-4 bg-white/90 luxury-blur px-3 py-1.5 rounded-full shadow-sm">
+<span class="font-label text-xs font-bold text-primary flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">stars</span> 
+                            5,200 PTS
+                        </span>
+</div>
+</div>
+<div class="space-y-3">
+<div class="flex justify-between items-start">
+<h3 class="text-2xl font-bold font-headline tracking-tight group-hover:text-secondary transition-colors leading-tight">Limited Edition Timepiece</h3>
+<span class="bg-surface-container-high px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider text-on-surface-variant">Objects</span>
+</div>
+<p class="text-on-surface-variant leading-relaxed text-sm">A bespoke Maestro-branded artisan watch featuring a Swiss automatic movement and Italian leather strap.</p>
+<div class="pt-4 flex items-center justify-between">
+<button class="font-label text-xs font-bold uppercase tracking-widest border-b-2 border-primary pb-0.5 hover:text-secondary hover:border-secondary transition-all">Redeem Reward</button>
+</div>
+</div>
+</article>
+</div>
+<!-- Pagination / Load More -->
+<div class="mt-24 text-center">
+<button class="bg-surface-container-lowest border-2 border-outline-variant px-12 py-4 rounded-full font-headline font-bold text-primary hover:bg-primary hover:text-white hover:border-primary transition-all duration-300">
+                Explore More Opportunities
+            </button>
+<p class="mt-6 text-sm text-on-surface-variant opacity-40 font-label tracking-widest">SHOWING 6 OF 42 REWARDS</p>
+</div>
+</main>
+<!-- Contextual FAB (Loyalty Balance) -->
+<div class="fixed bottom-8 right-8 z-40">
+<button class="flex items-center gap-3 bg-secondary text-white pl-4 pr-6 py-3 rounded-full shadow-2xl hover:scale-105 active:scale-95 transition-all">
+<div class="bg-white/20 p-2 rounded-full">
+<span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">account_balance_wallet</span>
+</div>
+<div class="text-left">
+<p class="text-[10px] font-label uppercase tracking-widest leading-none opacity-80">Your Balance</p>
+<p class="text-lg font-bold font-headline leading-none">24,850 <span class="text-xs">PTS</span></p>
+</div>
+</button>
+</div>
+<!-- Footer Space -->
+<footer class="bg-surface-container-low py-16 px-8 mt-20">
+<div class="max-w-screen-2xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+<div class="flex items-center gap-3">
+<span class="text-xl font-black text-sky-950 uppercase tracking-widest font-headline">Maestro</span>
+<span class="h-4 w-px bg-outline-variant mx-2"></span>
+<p class="text-xs font-label text-on-surface-variant tracking-wider uppercase">Privileged Loyalty Engine</p>
+</div>
+<div class="flex gap-8 text-sm font-label text-on-surface-variant uppercase tracking-widest font-bold">
+<a class="hover:text-primary transition-colors" href="#">Privacy</a>
+<a class="hover:text-primary transition-colors" href="#">Terms</a>
+<a class="hover:text-primary transition-colors" href="#">Contact</a>
+</div>
+</div>
+</footer>
+</body></html>
