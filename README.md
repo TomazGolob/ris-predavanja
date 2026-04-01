@@ -345,8 +345,34 @@ flowchart TD
 
 ![Konceptualni model](konceptualni_model.jpg)
 
+## 7. Zaslonske maske
+
+### Admin Rewards Management
+![Admin Rewards](design/maestro_admin_rewards_management/screen.png)
+
+### Admin Rules Management
+![Admin Rules](design/maestro_admin_rules_management/screen.png)
+
+### Admin Statistics Dashboard
+![Admin Stats](design/maestro_admin_statistics_dashboard/screen.png)
+
+### Customer Dashboard
+![Customer Dashboard](design/maestro_customer_dashboard/screen.png)
+
+### Login
+![Login](design/maestro_login/screen.png)
+
+### Registration
+![Registration](design/maestro_registration/screen.png)
+
+### Rewards Catalog
+![Rewards Catalog](design/maestro_rewards_catalog/screen.png)
+
+### Royal
+![Royal](design/maestro_royal/screen.png)
+
 ---
 
-## 7. Zaključek
+## 8. Zaključek
 
 Predlagana specifikacija zahtev opisuje celovito rešitev za podporo programu lojalnosti Maestro. Dokument zajema opis sistema, funkcionalne in nefunkcionalne zahteve, vmesnike, slovar izrazov in UML diagrame. Takšna specifikacija predstavlja dobro osnovo za nadaljnje modeliranje, načrtovanje arhitekture sistema, izdelavo podatkovnega modela ter implementacijo rešitve.
