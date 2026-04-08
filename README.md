@@ -370,6 +370,29 @@ flowchart TD
 
 ---
 
-## 8. Zaključek
+## 8. Metrika sledljivosti
+
+## 8. Matrka sledljivosti
+
+| Zahteva | Funkcionalnost | Zaslonska maska | Podatkovne tabele |
+|--------|----------------|----------------------------|---------------------------|
+| F1 | Registracija uporabnika | Registration | Uporabnik, Naslov |
+| F2 | Verifikacija e-pošte | Potrditveno e-sporočilo / registracijski flow | Uporabnik |
+| F3 | Ustvarjanje uporabniškega računa | Registration / Login | Uporabnik |
+| F4 | Generiranje kartice lojalnosti | / | Kartica_Lojalnosti, Uporabnik, Naslov |
+| F5 | Mesečni uvoz nakupov | / | Nakup, Uvoz_Nakupov |
+| F6 | Posodabljanje statusa | / | Status, Uporabnik, Zgodovina_Statusov, Pravilo_Statusa |
+| F7 | Izračun točk zvestobe | / | Transakcija_Tock, Uporabnik, Status, Pravilo_Izracuna |
+| F8 | Pregled točk | Customer Dashboard | Uporabnik, Status, Transakcija_Tock |
+| F9 | Koriščenje točk | Customer Dashboard / Rewards Catalog | Unovcenje, Nagrada, Transakcija_Tock, Uporabnik |
+| F10 | Pregled nagradnega programa | Rewards Catalog | Nagrada |
+| F11 | Pregled zgodovine nakupov | Customer Dashboard | Nakup, Uporabnik |
+| F12 | Upravljanje nagrad | Admin Rewards Management | Nagrada |
+| F13 | Upravljanje pravil točkovanja | Admin Rules Management | Pravilo_Izracuna, Pravilo_Statusa, Konfiguracija |
+| F14 | Pregled statusov za obdobje | Admin pregled statusov | Uporabnik, Status, Zgodovina_Statusov |
+| F15 | Pregled statistike nakupov | Admin Statistics Dashboard | Analitika, Nakup |
+| F16 | Poljubne poizvedbe po podatkovni bazi | Admin napredno iskanje / poizvedbe | Uporabnik, Nakup, Status, Zgodovina_Statusov, Transakcija_Tock, Nagrada, Unovcenje |
+
+## 9. Zaključek
 
 Predlagana specifikacija zahtev opisuje celovito rešitev za podporo programu lojalnosti Maestro. Dokument zajema opis sistema, funkcionalne in nefunkcionalne zahteve, vmesnike, slovar izrazov in UML diagrame. Takšna specifikacija predstavlja dobro osnovo za nadaljnje modeliranje, načrtovanje arhitekture sistema, izdelavo podatkovnega modela ter implementacijo rešitve.
