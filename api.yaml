@@ -1,0 +1,1353 @@
+openapi: 3.0.3
+info:
+  title: Maestro Loyalty Program API
+  version: 1.0.0
+  description: |
+    Enotna OpenAPI specifikacija za REST API sistema programa lojalnosti Maestro.
+
+    API pokriva:
+      - registracijo in verifikacijo uporabnikov,
+      - prijavo in upravljanje profila,
+      - pregled točk, statusov in zgodovine nakupov,
+      - pregled in unovčenje nagrad,
+      - administracijo pravil, nagrad, statusov in statistik,
+      - mesečni uvoz nakupov iz poslovnega IS.
+
+    Ta specifikacija temelji na priloženi funkcionalni specifikaciji uporabnika.
+servers:
+  - url: https://api.maestro.example.com
+    description: Production
+  - url: https://staging-api.maestro.example.com
+    description: Staging
+
+tags:
+  - name: Authentication
+  - name: Users
+  - name: Loyalty
+  - name: Purchases
+  - name: Rewards
+  - name: Admin Rules
+  - name: Admin Rewards
+  - name: Admin Purchases
+  - name: Admin Reporting
+  - name: Admin Queries
+
+security:
+  - bearerAuth: []
+
+paths:
+  /api/users/register:
+    post:
+      tags: [Authentication]
+      summary: Registracija novega uporabnika
+      description: Registrira novega člana programa lojalnosti.
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+            examples:
+              default:
+                value:
+                  firstName: Tomaž
+                  lastName: Novak
+                  email: tomaz.novak@example.com
+                  password: S3curePass!
+                  address:
+                    line1: Dunajska cesta 1
+                    city: Ljubljana
+                    postalCode: 1000
+                    countryCode: SI
+      responses:
+        '201':
+          description: Uporabnik uspešno registriran
+          headers:
+            Location:
+              description: URL novo ustvarjenega uporabnika
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegisterResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '409':
+          $ref: '#/components/responses/Conflict'
+
+  /api/users/verify:
+    get:
+      tags: [Authentication]
+      summary: Verifikacija e-pošte
+      description: Potrdi lastništvo e-poštnega naslova z verifikacijskim žetonom.
+      security: []
+      parameters:
+        - in: query
+          name: token
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: E-pošta uspešno verificirana
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerificationResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /api/users/login:
+    post:
+      tags: [Authentication]
+      summary: Prijava uporabnika
+      description: Avtentikacija uporabnika in vračilo JWT žetona.
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Uspešna prijava
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /api/users/me:
+    get:
+      tags: [Users]
+      summary: Profil prijavljenega uporabnika
+      responses:
+        '200':
+          description: Podatki uporabnika
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    put:
+      tags: [Users]
+      summary: Posodobitev profila prijavljenega uporabnika
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserProfileRequest'
+      responses:
+        '200':
+          description: Profil posodobljen
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    delete:
+      tags: [Users]
+      summary: Izbris ali deaktivacija uporabniškega računa
+      responses:
+        '204':
+          description: Račun deaktiviran
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /api/loyalty/points:
+    get:
+      tags: [Loyalty]
+      summary: Pregled točk, statusa in zgodovine transakcij
+      responses:
+        '200':
+          description: Trenutno stanje točk in zgodovina
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoyaltyPointsResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /api/loyalty/redeem:
+    post:
+      tags: [Loyalty]
+      summary: Unovčenje točk za nagrado
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RedeemRewardRequest'
+      responses:
+        '200':
+          description: Nagrada uspešno unovčena
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RewardRedemption'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+
+  /api/purchases:
+    get:
+      tags: [Purchases]
+      summary: Pregled zgodovine nakupov prijavljenega uporabnika
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/Sort'
+        - in: query
+          name: periodFrom
+          schema:
+            type: string
+            format: date
+        - in: query
+          name: periodTo
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: Seznam nakupov
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PurchasePage'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /api/rewards:
+    get:
+      tags: [Rewards]
+      summary: Pregled razpoložljivih nagrad
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PageSize'
+        - in: query
+          name: activeOnly
+          schema:
+            type: boolean
+            default: true
+      responses:
+        '200':
+          description: Seznam nagrad
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RewardPage'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /api/rewards/{rewardId}:
+    get:
+      tags: [Rewards]
+      summary: Podrobnosti nagrade
+      parameters:
+        - $ref: '#/components/parameters/RewardId'
+      responses:
+        '200':
+          description: Nagrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Reward'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /api/admin/rewards:
+    get:
+      tags: [Admin Rewards]
+      summary: Administratorski seznam nagrad
+      security:
+        - bearerAuth: [admin]
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PageSize'
+        - in: query
+          name: active
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: Seznam nagrad za administracijo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RewardPage'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+    post:
+      tags: [Admin Rewards]
+      summary: Ustvari nagrado
+      security:
+        - bearerAuth: [admin]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateRewardRequest'
+      responses:
+        '201':
+          description: Nagrada ustvarjena
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Reward'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+  /api/admin/rewards/{rewardId}:
+    put:
+      tags: [Admin Rewards]
+      summary: Posodobi nagrado
+      security:
+        - bearerAuth: [admin]
+      parameters:
+        - $ref: '#/components/parameters/RewardId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateRewardRequest'
+      responses:
+        '200':
+          description: Nagrada posodobljena
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Reward'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      tags: [Admin Rewards]
+      summary: Izbriši ali deaktiviraj nagrado
+      security:
+        - bearerAuth: [admin]
+      parameters:
+        - $ref: '#/components/parameters/RewardId'
+      responses:
+        '204':
+          description: Nagrada odstranjena ali deaktivirana
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /api/admin/rules:
+    get:
+      tags: [Admin Rules]
+      summary: Pregled pravil točkovanja in statusov
+      security:
+        - bearerAuth: [admin]
+      responses:
+        '200':
+          description: Vsa pravila
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RulesResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+    put:
+      tags: [Admin Rules]
+      summary: Posodobitev pravil točkovanja in statusov
+      security:
+        - bearerAuth: [admin]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateRulesRequest'
+      responses:
+        '200':
+          description: Pravila uspešno posodobljena
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RulesResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+  /api/admin/purchases/import:
+    post:
+      tags: [Admin Purchases]
+      summary: Mesečni uvoz nakupov iz poslovnega IS
+      description: Uvoz agregiranih mesečnih nakupov po uporabniku.
+      security:
+        - bearerAuth: [admin]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PurchaseImportRequest'
+      responses:
+        '202':
+          description: Uvoz sprejet v obdelavo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImportAcceptedResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+  /api/admin/purchases:
+    get:
+      tags: [Admin Purchases]
+      summary: Pregled uvoženih nakupov za obdobje
+      security:
+        - bearerAuth: [admin]
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PageSize'
+        - in: query
+          name: period
+          required: false
+          schema:
+            type: string
+            example: 2026-03
+        - in: query
+          name: userId
+          required: false
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Seznam mesečnih nakupov
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PurchasePage'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+  /api/admin/statuses:
+    get:
+      tags: [Admin Reporting]
+      summary: Pregled statusov strank za obdobje
+      security:
+        - bearerAuth: [admin]
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PageSize'
+        - in: query
+          name: period
+          required: true
+          schema:
+            type: string
+            example: 2026-03
+        - in: query
+          name: status
+          required: false
+          schema:
+            $ref: '#/components/schemas/LoyaltyStatus'
+      responses:
+        '200':
+          description: Statusi uporabnikov za obdobje
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserStatusPage'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+  /api/admin/statistics/purchases:
+    get:
+      tags: [Admin Reporting]
+      summary: Statistika nakupov
+      security:
+        - bearerAuth: [admin]
+      parameters:
+        - in: query
+          name: periodFrom
+          schema:
+            type: string
+            format: date
+        - in: query
+          name: periodTo
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: Agregirana statistika nakupov
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PurchaseStatisticsResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+  /api/admin/queries:
+    post:
+      tags: [Admin Queries]
+      summary: Nadzorovane poizvedbe nad podatki
+      description: |
+        Omogoča izvajanje vnaprej definiranih ali strogo nadzorovanih poizvedb.
+        Endpoint ne predvideva arbitrarnega SQL izvajanja neposredno iz odjemalca.
+      security:
+        - bearerAuth: [admin]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminQueryRequest'
+      responses:
+        '200':
+          description: Rezultat poizvedbe
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminQueryResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  parameters:
+    Page:
+      in: query
+      name: page
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+    PageSize:
+      in: query
+      name: pageSize
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 20
+    Sort:
+      in: query
+      name: sort
+      required: false
+      schema:
+        type: string
+        example: purchaseDate:desc
+    RewardId:
+      in: path
+      name: rewardId
+      required: true
+      schema:
+        type: string
+        format: uuid
+
+  responses:
+    BadRequest:
+      description: Napačen zahtevek
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+    Unauthorized:
+      description: Neavtoriziran dostop
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+    Forbidden:
+      description: Prepovedan dostop
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+    NotFound:
+      description: Vir ni najden
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+    Conflict:
+      description: Konflikt pri obdelavi zahtevka
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+    UnprocessableEntity:
+      description: Poslovno pravilo ni izpolnjeno
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+
+  schemas:
+    RegisterRequest:
+      type: object
+      required:
+        - firstName
+        - lastName
+        - email
+        - password
+        - address
+      properties:
+        firstName:
+          type: string
+          maxLength: 100
+        lastName:
+          type: string
+          maxLength: 100
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          format: password
+          minLength: 8
+        address:
+          $ref: '#/components/schemas/Address'
+
+    RegisterResponse:
+      type: object
+      required:
+        - success
+        - userId
+        - message
+      properties:
+        success:
+          type: boolean
+          example: true
+        userId:
+          type: string
+          format: uuid
+        loyaltyCardId:
+          type: string
+          format: uuid
+          nullable: true
+        message:
+          type: string
+          example: Registration successful. Verification email sent.
+
+    VerificationResponse:
+      type: object
+      required: [success, message]
+      properties:
+        success:
+          type: boolean
+        message:
+          type: string
+        verifiedAt:
+          type: string
+          format: date-time
+
+    LoginRequest:
+      type: object
+      required: [email, password]
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          format: password
+
+    LoginResponse:
+      type: object
+      required: [accessToken, tokenType, expiresIn, user]
+      properties:
+        accessToken:
+          type: string
+        tokenType:
+          type: string
+          example: Bearer
+        expiresIn:
+          type: integer
+          example: 3600
+        refreshToken:
+          type: string
+          nullable: true
+        user:
+          $ref: '#/components/schemas/UserSummary'
+
+    UserSummary:
+      type: object
+      required: [id, firstName, lastName, email, role]
+      properties:
+        id:
+          type: string
+          format: uuid
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+          format: email
+        role:
+          $ref: '#/components/schemas/UserRole'
+
+    UserProfile:
+      allOf:
+        - $ref: '#/components/schemas/UserSummary'
+        - type: object
+          required: [address, loyaltyStatus, pointsBalance, emailVerified]
+          properties:
+            address:
+              $ref: '#/components/schemas/Address'
+            loyaltyStatus:
+              $ref: '#/components/schemas/LoyaltyStatus'
+            pointsBalance:
+              type: number
+              format: float
+            emailVerified:
+              type: boolean
+            loyaltyCard:
+              $ref: '#/components/schemas/LoyaltyCard'
+            createdAt:
+              type: string
+              format: date-time
+            preferredLanguage:
+              type: string
+              enum: [sl, en]
+
+    UpdateUserProfileRequest:
+      type: object
+      properties:
+        firstName:
+          type: string
+          maxLength: 100
+        lastName:
+          type: string
+          maxLength: 100
+        address:
+          $ref: '#/components/schemas/Address'
+        preferredLanguage:
+          type: string
+          enum: [sl, en]
+
+    Address:
+      type: object
+      required: [line1, city, postalCode, countryCode]
+      properties:
+        line1:
+          type: string
+          maxLength: 200
+        line2:
+          type: string
+          maxLength: 200
+          nullable: true
+        city:
+          type: string
+          maxLength: 100
+        postalCode:
+          type: string
+          maxLength: 20
+        countryCode:
+          type: string
+          minLength: 2
+          maxLength: 2
+          example: SI
+
+    LoyaltyCard:
+      type: object
+      required: [id, memberSince, status]
+      properties:
+        id:
+          type: string
+          format: uuid
+        memberSince:
+          type: string
+          format: date
+        status:
+          type: string
+          enum: [ACTIVE, INACTIVE, PENDING_DISPATCH]
+        dispatchedAt:
+          type: string
+          format: date-time
+          nullable: true
+
+    LoyaltyPointsResponse:
+      type: object
+      required:
+        - userId
+        - currentStatus
+        - pointsBalance
+        - transactions
+      properties:
+        userId:
+          type: string
+          format: uuid
+        currentStatus:
+          $ref: '#/components/schemas/LoyaltyStatus'
+        pointsBalance:
+          type: number
+          format: float
+        lastCalculatedPeriod:
+          type: string
+          example: 2026-03
+        transactions:
+          type: array
+          items:
+            $ref: '#/components/schemas/PointsTransaction'
+
+    PointsTransaction:
+      type: object
+      required:
+        - id
+        - transactionType
+        - points
+        - createdAt
+      properties:
+        id:
+          type: string
+          format: uuid
+        transactionType:
+          type: string
+          enum: [EARNED, REDEEMED, ADJUSTMENT]
+        points:
+          type: number
+          format: float
+        description:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        period:
+          type: string
+          example: 2026-03
+        purchaseId:
+          type: string
+          format: uuid
+          nullable: true
+        rewardRedemptionId:
+          type: string
+          format: uuid
+          nullable: true
+
+    RedeemRewardRequest:
+      type: object
+      required: [rewardId]
+      properties:
+        rewardId:
+          type: string
+          format: uuid
+        quantity:
+          type: integer
+          minimum: 1
+          default: 1
+
+    RewardRedemption:
+      type: object
+      required:
+        - id
+        - rewardId
+        - userId
+        - pointsSpent
+        - status
+        - redeemedAt
+      properties:
+        id:
+          type: string
+          format: uuid
+        rewardId:
+          type: string
+          format: uuid
+        userId:
+          type: string
+          format: uuid
+        quantity:
+          type: integer
+        pointsSpent:
+          type: number
+          format: float
+        status:
+          type: string
+          enum: [SUCCESS, PENDING, REJECTED]
+        redeemedAt:
+          type: string
+          format: date-time
+        remainingBalance:
+          type: number
+          format: float
+
+    Purchase:
+      type: object
+      required:
+        - id
+        - userId
+        - period
+        - totalAmount
+        - currency
+      properties:
+        id:
+          type: string
+          format: uuid
+        userId:
+          type: string
+          format: uuid
+        period:
+          type: string
+          example: 2026-03
+        totalAmount:
+          type: number
+          format: float
+        currency:
+          type: string
+          example: EUR
+        importedAt:
+          type: string
+          format: date-time
+        sourceSystem:
+          type: string
+          example: BusinessIS
+
+    PurchasePage:
+      type: object
+      required: [page, pageSize, totalItems, totalPages, items]
+      properties:
+        page:
+          type: integer
+        pageSize:
+          type: integer
+        totalItems:
+          type: integer
+        totalPages:
+          type: integer
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Purchase'
+
+    Reward:
+      type: object
+      required:
+        - id
+        - name
+        - pointsCost
+        - active
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type: string
+        pointsCost:
+          type: number
+          format: float
+        quantityAvailable:
+          type: integer
+          nullable: true
+        active:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    CreateRewardRequest:
+      type: object
+      required: [name, pointsCost, active]
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        pointsCost:
+          type: number
+          format: float
+        quantityAvailable:
+          type: integer
+          minimum: 0
+          nullable: true
+        active:
+          type: boolean
+
+    UpdateRewardRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        pointsCost:
+          type: number
+          format: float
+        quantityAvailable:
+          type: integer
+          minimum: 0
+          nullable: true
+        active:
+          type: boolean
+
+    RewardPage:
+      type: object
+      required: [page, pageSize, totalItems, totalPages, items]
+      properties:
+        page:
+          type: integer
+        pageSize:
+          type: integer
+        totalItems:
+          type: integer
+        totalPages:
+          type: integer
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Reward'
+
+    RulesResponse:
+      type: object
+      required: [pointsRules, statusRules]
+      properties:
+        pointsRules:
+          type: array
+          items:
+            $ref: '#/components/schemas/PointsRule'
+        statusRules:
+          type: array
+          items:
+            $ref: '#/components/schemas/StatusRule'
+        updatedAt:
+          type: string
+          format: date-time
+
+    UpdateRulesRequest:
+      type: object
+      required: [pointsRules, statusRules]
+      properties:
+        pointsRules:
+          type: array
+          items:
+            $ref: '#/components/schemas/PointsRule'
+        statusRules:
+          type: array
+          items:
+            $ref: '#/components/schemas/StatusRule'
+
+    PointsRule:
+      type: object
+      required: [id, amountFrom, statusPoints]
+      properties:
+        id:
+          type: string
+          format: uuid
+        amountFrom:
+          type: number
+          format: float
+        amountTo:
+          type: number
+          format: float
+          nullable: true
+        statusPoints:
+          type: object
+          required: [OSNOVNI, BRONASTI, SREBRNI, ZLATI]
+          properties:
+            OSNOVNI:
+              type: number
+              format: float
+            BRONASTI:
+              type: number
+              format: float
+            SREBRNI:
+              type: number
+              format: float
+            ZLATI:
+              type: number
+              format: float
+      example:
+        id: 550e8400-e29b-41d4-a716-446655440001
+        amountFrom: 0
+        amountTo: 200
+        statusPoints:
+          OSNOVNI: 5
+          BRONASTI: 0
+          SREBRNI: 7.5
+          ZLATI: 10
+
+    StatusRule:
+      type: object
+      required: [id, code, description]
+      properties:
+        id:
+          type: string
+          format: uuid
+        code:
+          type: string
+          example: SILVER_ENTRY_THRESHOLD
+        description:
+          type: string
+        thresholdAmount:
+          type: number
+          format: float
+          nullable: true
+        consecutivePeriods:
+          type: integer
+          nullable: true
+        fromStatus:
+          $ref: '#/components/schemas/LoyaltyStatus'
+        toStatus:
+          $ref: '#/components/schemas/LoyaltyStatus'
+
+    PurchaseImportRequest:
+      type: object
+      required: [period, purchases]
+      properties:
+        period:
+          type: string
+          example: 2026-03
+        purchases:
+          type: array
+          items:
+            $ref: '#/components/schemas/PurchaseImportItem'
+
+    PurchaseImportItem:
+      type: object
+      required: [userId, totalAmount]
+      properties:
+        userId:
+          type: string
+          format: uuid
+        totalAmount:
+          type: number
+          format: float
+        currency:
+          type: string
+          default: EUR
+        sourceReference:
+          type: string
+          nullable: true
+
+    ImportAcceptedResponse:
+      type: object
+      required: [jobId, status, message]
+      properties:
+        jobId:
+          type: string
+          format: uuid
+        status:
+          type: string
+          enum: [ACCEPTED, PROCESSING]
+        message:
+          type: string
+
+    UserStatusSnapshot:
+      type: object
+      required: [userId, period, status]
+      properties:
+        userId:
+          type: string
+          format: uuid
+        userEmail:
+          type: string
+          format: email
+        period:
+          type: string
+          example: 2026-03
+        status:
+          $ref: '#/components/schemas/LoyaltyStatus'
+        qualifyingAmount:
+          type: number
+          format: float
+        evaluatedAt:
+          type: string
+          format: date-time
+
+    UserStatusPage:
+      type: object
+      required: [page, pageSize, totalItems, totalPages, items]
+      properties:
+        page:
+          type: integer
+        pageSize:
+          type: integer
+        totalItems:
+          type: integer
+        totalPages:
+          type: integer
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserStatusSnapshot'
+
+    PurchaseStatisticsResponse:
+      type: object
+      required: [periodFrom, periodTo, totals]
+      properties:
+        periodFrom:
+          type: string
+          format: date
+        periodTo:
+          type: string
+          format: date
+        totals:
+          $ref: '#/components/schemas/PurchaseStatisticsTotals'
+        byStatus:
+          type: array
+          items:
+            $ref: '#/components/schemas/PurchaseStatisticsByStatus'
+
+    PurchaseStatisticsTotals:
+      type: object
+      required: [customerCount, totalAmount, averageAmount]
+      properties:
+        customerCount:
+          type: integer
+        totalAmount:
+          type: number
+          format: float
+        averageAmount:
+          type: number
+          format: float
+        currency:
+          type: string
+          example: EUR
+
+    PurchaseStatisticsByStatus:
+      type: object
+      required: [status, customerCount, totalAmount]
+      properties:
+        status:
+          $ref: '#/components/schemas/LoyaltyStatus'
+        customerCount:
+          type: integer
+        totalAmount:
+          type: number
+          format: float
+        averageAmount:
+          type: number
+          format: float
+
+    AdminQueryRequest:
+      type: object
+      required: [queryName]
+      properties:
+        queryName:
+          type: string
+          example: users-without-purchases
+        filters:
+          type: object
+          additionalProperties: true
+          example:
+            period: 2026-03
+            status: BRONASTI
+
+    AdminQueryResponse:
+      type: object
+      required: [queryName, rowCount, rows]
+      properties:
+        queryName:
+          type: string
+        rowCount:
+          type: integer
+        rows:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+
+    ProblemDetails:
+      type: object
+      required: [type, title, status]
+      properties:
+        type:
+          type: string
+          format: uri
+        title:
+          type: string
+        status:
+          type: integer
+        detail:
+          type: string
+        instance:
+          type: string
+          format: uri
+        invalidParams:
+          type: array
+          items:
+            $ref: '#/components/schemas/InvalidParam'
+
+    InvalidParam:
+      type: object
+      required: [name, reason]
+      properties:
+        name:
+          type: string
+        reason:
+          type: string
+
+    LoyaltyStatus:
+      type: string
+      enum:
+        - OSNOVNI
+        - BRONASTI
+        - SREBRNI
+        - ZLATI
+
+    UserRole:
+      type: string
+      enum:
+        - GUEST
+        - MEMBER
+        - ADMIN
