@@ -239,63 +239,70 @@ Sistem mora zagotavljati jasno definirane programske vmesnike za komunikacijo z 
 
 ### 6.1 Diagram primerov uporabe
 
+## Diagram primerov uporabe
+
 ```mermaid
 flowchart LR
-    Gost[Gost / stranka]
-    Clan[Član programa lojalnosti]
-    Admin[Administrator]
-    BIS[Poslovni IS]
-    Mail[E-poštni sistem]
-    Posta[Poštni / logistični proces]
+
+    Gost["Neregistriran uporabnik"]
+    Clan["Član programa"]
+    Admin["Administrator"]
+    BIS["Poslovni IS"]
+    Mail["E-poštni sistem"]
+    Posta["Poštna služba"]
 
     subgraph Maestro["IS programa lojalnosti Maestro"]
-        UC1((Včlanitev v program lojalnosti))
-        UC1a((Verifikacija e-pošte))
-        UC1b((Ustvarjanje uporabniškega računa))
-        UC1c((Izdaja in pošiljanje kartice lojalnosti))
 
-        UC2((Prijava v portal))
-        UC3((Pregled stanja točk zvestobe))
-        UC4((Koriščenje točk zvestobe))
-        UC5((Pregled nagradnega programa))
-        UC6((Pregled zneskov nakupov))
+        F1(("F1 Registracija uporabnika"))
+        F2(("F2 Verifikacija e-pošte"))
+        F3(("F3 Ustvarjanje računa"))
+        F4(("F4 Generiranje kartice lojalnosti"))
 
-        UC7((Mesečna obdelava lojalnosti))
-        UC7a((Pridobitev podatkov o nakupih))
-        UC7b((Posodobitev statusa člana))
-        UC7c((Dodelitev točk zvestobe))
+        F5(("F5 Mesečni uvoz nakupov"))
+        F6(("F6 Posodabljanje statusa"))
+        F7(("F7 Izračun točk zvestobe"))
 
-        UC8((Pregled statusov strank za obdobje))
-        UC9((Pregled statistike nakupov))
-        UC10((Izvajanje nadzorovanih poizvedb))
-        UC11((Upravljanje nagradnega programa))
-        UC12((Upravljanje pravil statusov in točkovanja))
+        F8(("F8 Pregled točk"))
+        F9(("F9 Koriščenje točk"))
+        F10(("F10 Pregled nagradnega programa"))
+        F11(("F11 Pregled zgodovine nakupov"))
+
+        F12(("F12 Upravljanje nagrad"))
+        F13(("F13 Upravljanje pravil točkovanja"))
+        F14(("F14 Pregled statusov za obdobje"))
+        F15(("F15 Pregled statistike nakupov"))
+        F16(("F16 Poljubne poizvedbe po podatkovni bazi"))
+
     end
 
-    Gost --> UC1
-    Clan --> UC2
-    Clan --> UC3
-    Clan --> UC4
-    Clan --> UC5
-    Clan --> UC6
+    Gost --> F1
 
-    Admin --> UC8
-    Admin --> UC9
-    Admin --> UC10
-    Admin --> UC11
-    Admin --> UC12
+    Clan --> F8
+    Clan --> F9
+    Clan --> F10
+    Clan --> F11
 
-    BIS --> UC7
-    Mail --> UC1a
-    Posta --> UC1c
+    Admin --> F12
+    Admin --> F13
+    Admin --> F14
+    Admin --> F15
+    Admin --> F16
 
-    UC1 -. vključuje .-> UC1a
-    UC1 -. vključuje .-> UC1b
-    UC1 -. vključuje .-> UC1c
+    BIS --> F5
+    Mail --> F2
+    Posta --> F4
 
-    UC7 -. vključuje .-> UC7a
-    UC7 -. vključuje .-> UC7b
-    UC7 -. vključuje .-> UC7c
+    F1 -. include .-> F2
+    F1 -. include .-> F3
+    F1 -. include .-> F4
+
+    F5 -. include .-> F6
+    F6 -. include .-> F7
+
+    F9 -. include .-> F8
+
+    F13 -. include .-> F6
+    F13 -. include .-> F7
 ```
 
 ### 6.2 Funkcionalna dekompozicija
